@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-
 export const fetchDomains = createAsyncThunk(
   "domains/fetchDomains",
   async () => {
@@ -13,7 +12,6 @@ export const fetchDomains = createAsyncThunk(
     return response.json();
   }
 );
-
 
 export const updateDomain = createAsyncThunk(
   "domains/updateDomain",
@@ -38,7 +36,6 @@ export const updateDomain = createAsyncThunk(
     }
   }
 );
-
 
 export const deleteDomain = createAsyncThunk(
   "domains/deleteDomain",
@@ -82,7 +79,7 @@ const domainSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
       })
-      
+
       .addCase(updateDomain.pending, (state) => {
         state.status = "loading";
       })

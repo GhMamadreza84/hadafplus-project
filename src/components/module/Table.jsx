@@ -158,7 +158,7 @@ function Table({ columns }) {
                 {selectedRowIndex === index && (
                   <div>
                     <DropdownMenu
-                      domainId={domains[index].id}
+                      domainId={item.id}
                       onClose={() => setSelectedRowIndex(null)}
                     />
                   </div>

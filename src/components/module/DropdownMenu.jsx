@@ -74,9 +74,12 @@ const DropdownMenu = ({ domainId, onClose }) => {
         <button
           key={item.value}
           onClick={() => handleSelect(item.value)}
-          className={`w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ${
-            item.danger ? "text-red-600 hover:bg-red-50" : ""
-          }`}
+          disabled={item.disabled ? true : false}
+          className={`w-full text-left px-4 py-2 text-sm ${
+            item.disabled
+              ? "text-slate-200"
+              : "text-gray-700 hover:bg-gray-100 cursor-pointer"
+          } ${item.danger ? "text-red-600 hover:bg-red-50" : ""}`}
         >
           {item.label}
         </button>

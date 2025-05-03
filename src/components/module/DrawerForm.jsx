@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { showToast } from "../../context/features/toastSlice";
+import { fetchDomains } from "../../context/features/domainSlice";
 
 const DrawerForm = ({ onSubmit: externalOnSubmit }) => {
   const dispatch = useDispatch();
@@ -35,6 +36,7 @@ const DrawerForm = ({ onSubmit: externalOnSubmit }) => {
       );
 
       if (response.ok) {
+        dispatch(fetchDomains());
         dispatch(
           showToast({ message: "Domain added successfuly", type: "success" })
         );
