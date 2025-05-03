@@ -8,6 +8,23 @@ function DomainContainer() {
   const { domains, status, error } = useSelector((state) => state.domains);
   const searchQuery = useSelector((state) => state.search.query);
   const sortBy = useSelector((state) => state.sort.sortBy);
+
+  let columns = [
+    { key: "domain", label: "Domain URL" },
+    {
+      key: "isActive",
+      label: "Active Status",
+    },
+    {
+      key: "status",
+      label: "Verification Status",
+    },
+    {
+      key: "",
+      label: "",
+    },
+  ];
+
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchDomains());
@@ -27,10 +44,10 @@ function DomainContainer() {
     return b.domain.localeCompare(a.domain);
   });
 
-  console.log("Search Query:", searchQuery);
-  console.log("Sort By:", sortBy);
-  console.log("Filtered Domains:", filteredDomains);
-  console.log("Sorted Domains:", sortedDomains);
+  // console.log("Search Query:", searchQuery);
+  // console.log("Sort By:", sortBy);
+  // console.log("Filtered Domains:", filteredDomains);
+  // console.log("Sorted Domains:", sortedDomains);
 
   if (status === "loading") {
     return <div className="p-4 text-center">Loading...</div>;
@@ -44,7 +61,7 @@ function DomainContainer() {
     return <div className="p-4 text-center">No domains found</div>;
   }
 
-  return <Table domains={sortedDomains} />;
+  return <Table domains={sortedDomains} columns={columns} />;
 }
 
 export default DomainContainer;

@@ -1,31 +1,51 @@
-function Table({ domains }) {
+import React, { useState, useRef } from "react";
+import DropdownMenu from "./DropdownMenu";
+
+function Table({ domains, columns }) {
+  const [selectedRowIndex, setSelectedRowIndex] = useState(null);
+  const tableRef = useRef(null);
+
+  const handleMenuToggle = (index) => {
+    setSelectedRowIndex((prev) => (prev === index ? null : index));
+  };
+
+  const handleMenuSelect = (value) => {
+    console.log(
+      `Selected action: ${value} for domain ${domains[selectedRowIndex]?.domain}`
+    );
+    setSelectedRowIndex(null);
+  };
+
+  const handleTableClick = (event) => {
+    if (selectedRowIndex !== null) {
+      const menuElement = tableRef.current.querySelector(".dropdown-menu");
+      const dotsButton = event.target.closest("button");
+      if (menuElement && !menuElement.contains(event.target) && !dotsButton) {
+        setSelectedRowIndex(null);
+      }
+    }
+  };
+
   return (
     <div className="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-sm mt-5 border border-slate-300">
-      <table className="w-full text-left table-auto min-w-max">
+      <table
+        ref={tableRef}
+        className="w-full text-left table-auto min-w-max"
+        onClick={handleTableClick}
+      >
         <thead>
           <tr>
-            <th className="p-4 border-b border-slate-300">
-              <p className="block font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
-                Domain URL
-              </p>
-            </th>
-            <th className="p-4 border-b border-slate-300">
-              <p className="block font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
-                Active Status
-              </p>
-            </th>
-            <th className="p-4 border-b border-slate-300">
-              <p className="block font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
-                Verification Status
-              </p>
-            </th>
-            <th className="p-4 border-b border-slate-300">
-              <p className="block font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70"></p>
-            </th>
+            {columns.map((item) => (
+              <th key={item.key} className="p-4 border-b border-slate-300">
+                <p className="block font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
+                  {item.label}
+                </p>
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>
-          {domains.map((item) => (
+          {domains.map((item, index) => (
             <tr key={item.id}>
               <td className="p-4 border-b border-slate-300">
                 <p className="flex items-center gap-3 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
@@ -78,14 +98,21 @@ function Table({ domains }) {
               <td className="p-4 border-b border-slate-300">
                 <p
                   className={`block font-sans text-sm antialiased font-medium leading-normal ${
-                    item.status ? "text-green-600" : "text-red-600"
-                  }`}
+                    item.status === "verified"
+                      ? "text-green-600"
+                      : "text-red-600"
+                  } ${item.status === "pending" ? "!text-amber-400" : null}`}
                 >
-                  {item.status ? "Verified" : "Not Verified"}
+                  {item.status === "verified" ? "Verified" : null}
+                  {item.status === "pending" ? "Pending" : null}
+                  {item.status === "rejected" ? "Not Verified" : null}
                 </p>
               </td>
-              <td className="p-4 border-b border-slate-300">
-                <button>
+              <td className="p-4 border-b border-slate-300 relative">
+                <button
+                  onClick={() => handleMenuToggle(index)}
+                  className="focus:outline-none"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -97,6 +124,14 @@ function Table({ domains }) {
                     <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
                   </svg>
                 </button>
+                {selectedRowIndex === index && (
+                  <div className="dropdown-menu">
+                    <DropdownMenu
+                      onClose={() => setSelectedRowIndex(null)}
+                      onSelect={handleMenuSelect}
+                    />
+                  </div>
+                )}
               </td>
             </tr>
           ))}
