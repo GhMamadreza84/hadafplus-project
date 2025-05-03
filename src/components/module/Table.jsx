@@ -1,19 +1,26 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchDomains } from "../../context/features/domainSlice";
 import DropdownMenu from "./DropdownMenu";
 
-function Table({ domains, columns }) {
+function Table({ columns }) {
+  const dispatch = useDispatch();
+  const domains = useSelector((state) => state.domains.domains);
+  const status = useSelector((state) => state.domains.status);
+  const error = useSelector((state) => state.domains.error);
   const [selectedRowIndex, setSelectedRowIndex] = useState(null);
   const tableRef = useRef(null);
+  const searchQuery = useSelector((state) => state.search.query);
+  const sortBy = useSelector((state) => state.sort.sortBy);
+
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchDomains());
+    }
+  }, [status, dispatch]);
 
   const handleMenuToggle = (index) => {
     setSelectedRowIndex((prev) => (prev === index ? null : index));
-  };
-
-  const handleMenuSelect = (value) => {
-    console.log(
-      `Selected action: ${value} for domain ${domains[selectedRowIndex]?.domain}`
-    );
-    setSelectedRowIndex(null);
   };
 
   const handleTableClick = (event) => {
@@ -25,6 +32,29 @@ function Table({ domains, columns }) {
       }
     }
   };
+
+  const filteredData = domains.filter((item) =>
+    columns.some((col) =>
+      String(item[col.key]).toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  );
+
+  const sortedData = React.useMemo(() => {
+    let sortableData = [...filteredData];
+    sortableData.sort((a, b) => {
+      for (let col of columns) {
+        const aValue = a[col.key];
+        const bValue = b[col.key];
+        if (aValue < bValue) return sortBy === "asc" ? -1 : 1;
+        if (aValue > bValue) return sortBy === "asc" ? 1 : -1;
+      }
+      return 0;
+    });
+    return sortableData;
+  }, [filteredData, sortBy, columns]);
+
+  if (status === "loading") return <div>Loading...</div>;
+  if (status === "failed") return <div>Error: {error}</div>;
 
   return (
     <div className="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-sm mt-5 border border-slate-300">
@@ -45,7 +75,7 @@ function Table({ domains, columns }) {
           </tr>
         </thead>
         <tbody>
-          {domains.map((item, index) => (
+          {sortedData.map((item, index) => (
             <tr key={item.id}>
               <td className="p-4 border-b border-slate-300">
                 <p className="flex items-center gap-3 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
@@ -112,6 +142,7 @@ function Table({ domains, columns }) {
                 <button
                   onClick={() => handleMenuToggle(index)}
                   className="focus:outline-none"
+                  aria-label="Toggle actions menu"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -125,10 +156,10 @@ function Table({ domains, columns }) {
                   </svg>
                 </button>
                 {selectedRowIndex === index && (
-                  <div className="dropdown-menu">
+                  <div>
                     <DropdownMenu
+                      domainId={domains[index].id}
                       onClose={() => setSelectedRowIndex(null)}
-                      onSelect={handleMenuSelect}
                     />
                   </div>
                 )}

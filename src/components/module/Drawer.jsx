@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { closeDrawer, openDrawer } from "../../context/features/drawerSlice";
 
-const Drawer = () => {
+const Drawer = ({ children }) => {
   const open = useSelector((state) => state.drawer.open);
   const dispatch = useDispatch();
   const drawerRef = useRef(null);
@@ -69,25 +69,7 @@ const Drawer = () => {
             />
           </svg>
         </button>
-        <div className="relative h-full">
-          <h2 className="text-xl mb-4">Add domain</h2>
-          <input
-            type="text"
-            placeholder="Ex:httpls://www.bridge.media"
-            className="outline-none placeholder:text-slate-300 border border-slate-200 w-full px-1 py-2 rounded-sm"
-          />
-          <div className="absolute bottom-0 right-0 flex gap-4 ">
-            <button
-              onClick={() => dispatch(closeDrawer())}
-              className="border border-slate-200 w-20 rounded-sm cursor-pointer"
-            >
-              Cancel
-            </button>
-            <button className="bg-sky-600 flex justify-center items-center text-white w-20 rounded-sm px-4 py-2 cursor-pointer">
-              Add
-            </button>
-          </div>
-        </div>
+        <div className="relative h-full">{children}</div>
       </nav>
       {open ? (
         <div className="bg-black opacity-40 fixed top-0 left-0 w-full h-full z-10"></div>
