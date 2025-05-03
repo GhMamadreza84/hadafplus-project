@@ -69,19 +69,19 @@ function Table({ domains }) {
               <td className="p-4 border-b border-slate-300">
                 <p
                   className={`block font-sans text-sm antialiased leading-normal font-medium ${
-                    item.isActive ? 'text-green-600' : 'text-red-600'
+                    item.isActive ? "text-green-600" : "text-red-600"
                   }`}
                 >
-                  Active
+                  {item.isActive ? "Active" : "Not Active"}
                 </p>
               </td>
               <td className="p-4 border-b border-slate-300">
                 <p
                   className={`block font-sans text-sm antialiased font-medium leading-normal ${
-                    item.status ? 'text-green-600' : 'text-red-600'
+                    item.status ? "text-green-600" : "text-red-600"
                   }`}
                 >
-                  Verified
+                  {item.status ? "Verified" : "Not Verified"}
                 </p>
               </td>
               <td className="p-4 border-b border-slate-300">
