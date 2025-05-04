@@ -8,7 +8,7 @@ const DrawerForm = ({ onSubmit: externalOnSubmit }) => {
   const [domainInput, setDomainInput] = useState("");
 
   const handleAddDomain = async () => {
-    if (!domainInput.startsWith("https://www")) {
+    if (!domainInput.startsWith("https://")) {
       dispatch(
         showToast({
           message: "Domain need to be start with https://",
