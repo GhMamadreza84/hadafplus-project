@@ -8,11 +8,11 @@ import "react-toastify/dist/ReactToastify.css";
 function App() {
   return (
     <div className="font-sans p-4">
-      <div className="w-full flex justify-between items-center">
+      <div className="w-full flex flex-col justify-between gap-2 md:gap-0 md:items-center md:flex-row ">
         <Drawer>
           <DrawerForm />
         </Drawer>
-        <div className="w-2/5 flex gap-10">
+        <div className="w-full md:w-2/5 flex gap-10">
           <Select />
           <SearchInput />
         </div>

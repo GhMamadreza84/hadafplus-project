@@ -57,7 +57,7 @@ function Table({ columns }) {
   if (status === "failed") return <div>Error: {error}</div>;
 
   return (
-    <div className="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-sm mt-5 border border-slate-300">
+    <div className="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-sm mt-5 border border-slate-300 overflow-y-scroll sm:overflow-y-visible">
       <table
         ref={tableRef}
         className="w-full text-left table-auto min-w-max"

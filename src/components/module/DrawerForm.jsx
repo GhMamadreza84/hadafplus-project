@@ -11,7 +11,7 @@ const DrawerForm = ({ onSubmit: externalOnSubmit }) => {
     if (!domainInput.startsWith("https://www")) {
       dispatch(
         showToast({
-          message: "Domain need to be start with https://www",
+          message: "Domain need to be start with https://",
           type: "error",
         })
       );
@@ -63,20 +63,20 @@ const DrawerForm = ({ onSubmit: externalOnSubmit }) => {
         placeholder="Ex: https://www.bridge.media"
         value={domainInput}
         onChange={(e) => setDomainInput(e.target.value)}
-        className="outline-none placeholder:text-slate-300 border border-slate-200 w-full px-1 py-2 rounded-sm"
+        className="outline-none placeholder:text-slate-300 placeholder:text-xs sm:placeholder:text-base  border border-slate-200 w-full px-1 py-2 rounded-sm "
       />
-      <div className="absolute bottom-0 right-0 flex gap-4">
+      <div className="absolute bottom-20 sm:bottom-0 left-0 sm:right-0 flex w-full  gap-4">
         <button
           onClick={() => {
             if (externalOnSubmit) externalOnSubmit();
           }}
-          className="border border-slate-200 w-20 rounded-sm cursor-pointer"
+          className="border border-slate-200 w-20 text-sm sm:text-base rounded-sm cursor-pointer  px-0 py-1"
         >
           Cancel
         </button>
         <button
           onClick={handleAddDomain}
-          className="bg-sky-600 flex justify-center items-center text-white w-20 rounded-sm px-4 py-2 cursor-pointer"
+          className="bg-sky-600 flex justify-center items-center text-white w-20 text-sm sm:text-base rounded-sm px-4 py-2 cursor-pointer"
         >
           Add
         </button>

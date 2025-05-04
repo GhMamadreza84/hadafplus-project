@@ -8,7 +8,7 @@ const toastSlice = createSlice({
       const { message, type } = action.payload;
       toast[type](message, {
         position: "top-left",
-        autoClose: 2000,
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

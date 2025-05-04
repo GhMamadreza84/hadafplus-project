@@ -27,7 +27,7 @@ const Drawer = ({ children }) => {
     <div>
       <button
         onClick={() => dispatch(openDrawer())}
-        className="bg-sky-600 flex justify-center items-center text-white w-40 rounded-sm px-4 py-2 cursor-pointer"
+        className="bg-sky-600 flex justify-center items-center text-white text-sm sm:text-base w-36 sm:w-40 rounded-sm px-4 py-2 cursor-pointer"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +44,7 @@ const Drawer = ({ children }) => {
 
       <nav
         ref={drawerRef}
-        className={`flex flex-col fixed z-50 top-0 right-0 h-screen w-1/3 bg-white p-8 transform transition-transform duration-300 ${
+        className={`flex flex-col fixed z-50 top-0 right-0 h-screen w-1/2 sm:w-1/3 bg-white p-4 sm:p-8 transform transition-transform duration-300 ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
       >
